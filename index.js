@@ -1,21 +1,43 @@
-const NUM_PIEZAS=10;
-const PROB_ERROR=0.25;
+//Constantes e variables
+
+//Constantes
+const NUM_PIEZAS=1000;
+const PROB_ERROR=0.003;
+
+//Variables
+let correctas = 0;
+let defectuosas = 0;
+
+//classes
+class ErrorPiezaDefectuosa extends Error{}
+class ErrorCadenaParada extends Error{}
 
 const comprobarDefectuosa = () => (Math.random() < PROB_ERROR);
 
+
+
 for (let i=1; i <= NUM_PIEZAS; i++){
     const esDefectuosa = comprobarDefectuosa();
-    console.log (`esDefectuosa: ${esDefectuosa}`)
 try{
+        if (i === 2){
+            throw new ErrorCadenaParada('A cadea de produción parou');
+        }
         if (esDefectuosa) {
-            throw `-> Pieza ${i} defectuosa`;
+            throw new ErrorPiezaDefectuosa (`-> Pieza ${i} defectuosa`);
         }
-        else {
-            console.log (`Pieza ${i} Fabricada`)
-
-        }
+        else 
+            correctas++;
+    
     } catch (error){
-        throw error;
+        defectuosas++;
+        console.log(`Erro ${i} (mensaxe):${error.message}`);
+        console.log(`Erro ${i}(nome):${error.name}`);
+        console.log(`Erro ${i}(stack):${error.stack}`);
+    }finally{
+        
     }
-
 }
+
+console.log(`Fabricadas ${NUM_PIEZAS}`);
+console.log(`-> Correctas:   ${correctas} `);
+console.log(`-> Defectuosas: ${defectuosas}`);
